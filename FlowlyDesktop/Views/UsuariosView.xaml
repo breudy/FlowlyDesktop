@@ -1,0 +1,44 @@
+<UserControl x:Class="FlowlyDesktop.Views.UsuariosView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <StackPanel>
+        <TextBlock Text="Administración / Usuarios" Style="{StaticResource Breadcrumb}"/>
+        <TextBlock Text="Usuarios" Style="{StaticResource H1}"/>
+        <TextBlock Text="Personas del proyecto académico: administradores y usuarios técnicos." Style="{StaticResource Sub}"/>
+
+        <Grid Margin="0,0,0,14">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="Buscar usuario" Style="{StaticResource Label}" Margin="0,0,0,4"/>
+                <TextBox x:Name="Buscar" TextChanged="Buscar_Changed"/>
+            </StackPanel>
+            <Button Grid.Column="2" Content="Crear usuario" Style="{StaticResource PrimaryButton}"
+                    VerticalAlignment="Bottom" Click="Crear_Click"/>
+        </Grid>
+
+        <TextBlock x:Name="Error" Style="{StaticResource ErrorText}" Margin="0,0,0,8"/>
+
+        <DataGrid x:Name="Tabla" MinHeight="220" MaxHeight="440">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Usuario" Binding="{Binding NombreCompleto}" Width="1.5*"/>
+                <DataGridTextColumn Header="Correo electrónico" Binding="{Binding Email}" Width="2*"/>
+                <DataGridTextColumn Header="Rol" Binding="{Binding RolEtiqueta}" Width="1.2*"/>
+                <DataGridTextColumn Header="Tarifa" Binding="{Binding Tarifa}" Width="0.8*"/>
+                <DataGridTextColumn Header="Grupos" Binding="{Binding Grupos}" Width="1.6*"/>
+                <DataGridTextColumn Header="Estado" Binding="{Binding Estado}" Width="0.8*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Orientation="Horizontal" Margin="0,14,0,0">
+            <Button Content="Editar" Style="{StaticResource SecondaryButton}" Click="Editar_Click"/>
+            <Button Content="Activar / desactivar" Style="{StaticResource SecondaryButton}" Margin="10,0,0,0" Click="Activo_Click"/>
+            <Button Content="Cambiar contraseña" Style="{StaticResource SecondaryButton}" Margin="10,0,0,0" Click="Password_Click"/>
+        </StackPanel>
+        <TextBlock Text="Los usuarios no se borran, se desactivan, para conservar su historial de horas."
+                   Style="{StaticResource Muted}" Margin="0,10,0,0"/>
+    </StackPanel>
+</UserControl>

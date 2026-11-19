@@ -1,0 +1,140 @@
+<UserControl x:Class="FlowlyDesktop.Views.TareasView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <StackPanel>
+        <TextBlock Text="Administración / Tareas" Style="{StaticResource Breadcrumb}"/>
+        <TextBlock Text="Gestión de tareas" Style="{StaticResource H1}"/>
+        <TextBlock x:Name="Subtitulo" Text="Elige un proyecto para ver y crear sus tareas." Style="{StaticResource Sub}"/>
+
+        <StackPanel Margin="0,0,0,14" MaxWidth="420" HorizontalAlignment="Left">
+            <TextBlock Text="Proyecto" Style="{StaticResource Label}" Margin="0,0,0,4"/>
+            <ComboBox x:Name="ProyectoCombo" DisplayMemberPath="Nombre" SelectionChanged="Proyecto_Changed"/>
+        </StackPanel>
+
+        <TextBlock x:Name="ErrorGeneral" Style="{StaticResource ErrorText}" Margin="0,0,0,8"/>
+
+        <Grid x:Name="Contenido" Visibility="Collapsed">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="250"/>
+                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Lista de tareas del proyecto -->
+            <Border Grid.Column="0" Style="{StaticResource Card}" VerticalAlignment="Top">
+                <StackPanel>
+                    <TextBlock Text="Tareas del proyecto" Style="{StaticResource H2}"/>
+                    <Button Content="+ Nueva tarea" Style="{StaticResource SecondaryButton}" Click="Nueva_Click"/>
+                    <ListBox x:Name="ListaTareas" Margin="0,12,0,0" MaxHeight="440" BorderThickness="0"
+                             SelectionChanged="Tarea_Selected" DisplayMemberPath="Texto"/>
+                    <TextBlock x:Name="ListaVacia" Text="Este proyecto aún no tiene tareas." Style="{StaticResource Muted}"/>
+                </StackPanel>
+            </Border>
+
+            <!-- Formulario (cuatro tarjetas como en el wireframe) -->
+            <StackPanel Grid.Column="2">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="16"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="16"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <!-- Crear / editar tarea -->
+                    <Border Grid.Row="0" Grid.Column="0" Style="{StaticResource Card}">
+                        <StackPanel>
+                            <TextBlock x:Name="TituloForm" Text="Crear tarea" Style="{StaticResource H2}"/>
+                            <TextBlock Text="Nombre de la tarea *" Style="{StaticResource Label}" Margin="0,0,0,4"/>
+                            <TextBox x:Name="Nombre" MaxLength="120"/>
+                            <TextBlock Text="Descripción *" Style="{StaticResource Label}"/>
+                            <TextBox x:Name="Descripcion" AcceptsReturn="True" TextWrapping="Wrap" Height="62"
+                                     VerticalContentAlignment="Top" VerticalScrollBarVisibility="Auto"/>
+                            <StackPanel x:Name="PanelPadre">
+                                <TextBlock Text="Subtarea de (opcional)" Style="{StaticResource Label}"/>
+                                <ComboBox x:Name="Padre" DisplayMemberPath="Texto"/>
+                            </StackPanel>
+                            <StackPanel x:Name="PanelEstado" Visibility="Collapsed">
+                                <TextBlock Text="Estado" Style="{StaticResource Label}"/>
+                                <ComboBox x:Name="Estado" DisplayMemberPath="Texto"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Asignar usuarios -->
+                    <Border Grid.Row="0" Grid.Column="2" Style="{StaticResource Card}">
+                        <StackPanel>
+                            <TextBlock Text="Asignar usuarios" Style="{StaticResource H2}"/>
+                            <TextBlock Text="Selecciona las personas responsables." Style="{StaticResource Muted}" Margin="0,0,0,8"/>
+                            <ItemsControl x:Name="ListaUsuarios">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Content="{Binding Texto}" IsChecked="{Binding Seleccionado, Mode=TwoWay}"
+                                                  Margin="0,3"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <TextBlock x:Name="UsuariosInfo" Style="{StaticResource Muted}" Margin="0,8,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Dependencias -->
+                    <Border Grid.Row="2" Grid.Column="0" Style="{StaticResource Card}">
+                        <StackPanel>
+                            <TextBlock Text="Definir dependencias" Style="{StaticResource H2}"/>
+                            <TextBlock Text="Tareas previas" Style="{StaticResource Label}" Margin="0,0,0,4"/>
+                            <ItemsControl x:Name="ListaPrevias">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <CheckBox Content="{Binding Texto}" IsChecked="{Binding Seleccionado, Mode=TwoWay}"
+                                                  Margin="0,3"/>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                            <TextBlock Text="Una tarea no puede empezar hasta que sus tareas previas estén finalizadas."
+                                       Style="{StaticResource Muted}" Margin="0,8,0,0"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Horas -->
+                    <Border Grid.Row="2" Grid.Column="2" Style="{StaticResource Card}">
+                        <StackPanel>
+                            <TextBlock Text="Estimar horas" Style="{StaticResource H2}"/>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="12"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <StackPanel Grid.Column="0">
+                                    <TextBlock Text="Horas estimadas *" Style="{StaticResource Label}" Margin="0,0,0,4"/>
+                                    <TextBox x:Name="Horas" Text="0"/>
+                                </StackPanel>
+                                <StackPanel Grid.Column="2">
+                                    <TextBlock Text="Fecha límite" Style="{StaticResource Label}" Margin="0,0,0,4"/>
+                                    <DatePicker x:Name="FechaLimite"/>
+                                </StackPanel>
+                            </Grid>
+                            <TextBlock x:Name="HorasInfo" Style="{StaticResource Muted}" Margin="0,10,0,0"/>
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+                <TextBlock x:Name="Error" Style="{StaticResource ErrorText}"/>
+
+                <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
+                    <Button x:Name="Guardar" Content="Guardar tarea" Style="{StaticResource PrimaryButton}" Click="Guardar_Click"/>
+                    <Button Content="Cancelar" Style="{StaticResource SecondaryButton}" Margin="10,0,0,0" Click="Nueva_Click"/>
+                    <Button x:Name="Eliminar" Content="Eliminar tarea" Style="{StaticResource DangerButton}"
+                            Margin="10,0,0,0" Visibility="Collapsed" Click="Eliminar_Click"/>
+                </StackPanel>
+                <TextBlock Text="* Campos obligatorios · La asignación y las dependencias se guardan con la tarea."
+                           Style="{StaticResource Muted}" Margin="0,10,0,0"/>
+            </StackPanel>
+        </Grid>
+    </StackPanel>
+</UserControl>

@@ -1,0 +1,76 @@
+<UserControl x:Class="FlowlyDesktop.Views.RolesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <StackPanel>
+        <TextBlock Text="Administración / Roles" Style="{StaticResource Breadcrumb}"/>
+        <TextBlock Text="Gestión de roles de usuario" Style="{StaticResource H1}"/>
+        <TextBlock Text="Revisa permisos y asigna el rol adecuado a cada persona." Style="{StaticResource Sub}"/>
+
+        <Grid Margin="0,0,0,14">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="Buscar usuario" Style="{StaticResource Label}" Margin="0,0,0,4"/>
+                <TextBox x:Name="Buscar" TextChanged="Filtro_Changed"/>
+            </StackPanel>
+            <StackPanel Grid.Column="2">
+                <TextBlock Text="Filtrar por rol" Style="{StaticResource Label}" Margin="0,0,0,4"/>
+                <ComboBox x:Name="RolFiltro" DisplayMemberPath="Etiqueta" SelectionChanged="Filtro_Changed"/>
+            </StackPanel>
+        </Grid>
+
+        <TextBlock x:Name="Error" Style="{StaticResource ErrorText}" Margin="0,0,0,8"/>
+
+        <DataGrid x:Name="Tabla" MinHeight="180" MaxHeight="360">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Usuario" Binding="{Binding Nombre}" Width="1.4*"/>
+                <DataGridTextColumn Header="Correo electrónico" Binding="{Binding Email}" Width="2*"/>
+                <DataGridTextColumn Header="Rol actual" Binding="{Binding RolActualEtiqueta}" Width="1.3*"/>
+                <DataGridTemplateColumn Header="Nuevo rol" Width="1.5*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox ItemsSource="{Binding Roles}" DisplayMemberPath="Etiqueta"
+                                      SelectedItem="{Binding NuevoRol, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Padding="6,3" VerticalAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Grid Margin="0,18,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Text="Administrador" Style="{StaticResource H2}" Margin="0,0,0,8"/>
+                    <TextBlock Text="Escritorio: crea proyectos y usuarios, gestiona tareas y roles y consulta informes."
+                               TextWrapping="Wrap"/>
+                    <TextBlock Text="Móvil: consulta de proyectos y tareas en solo lectura." FontWeight="SemiBold"
+                               TextWrapping="Wrap" Margin="0,8,0,0"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="2" Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Text="Usuario técnico" Style="{StaticResource H2}" Margin="0,0,0,8"/>
+                    <TextBlock Text="Consulta tareas asignadas, cambia su estado y registra horas desde el móvil."
+                               TextWrapping="Wrap"/>
+                    <TextBlock Text="Sin permisos de gestión de proyectos, usuarios ni roles."
+                               Style="{StaticResource Muted}" Margin="0,8,0,0"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <StackPanel Orientation="Horizontal" Margin="0,16,0,0">
+            <Button x:Name="Guardar" Content="Guardar cambios" Style="{StaticResource PrimaryButton}" Click="Guardar_Click"/>
+            <Button Content="Descartar" Style="{StaticResource SecondaryButton}" Margin="10,0,0,0" Click="Descartar_Click"/>
+        </StackPanel>
+        <TextBlock Text="Los permisos dependen del rol y del dispositivo." Style="{StaticResource Muted}" Margin="0,10,0,0"/>
+    </StackPanel>
+</UserControl>

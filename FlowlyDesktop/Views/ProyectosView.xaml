@@ -1,0 +1,89 @@
+<UserControl x:Class="FlowlyDesktop.Views.ProyectosView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <StackPanel>
+        <TextBlock Text="Administración / Proyectos" Style="{StaticResource Breadcrumb}"/>
+        <TextBlock Text="Proyectos" Style="{StaticResource H1}"/>
+        <TextBlock Text="Seguimiento de los proyectos académicos del centro de FP." Style="{StaticResource Sub}"/>
+
+        <!-- Indicadores -->
+        <UniformGrid Rows="1" Columns="4" Margin="0,0,0,18">
+            <Border Style="{StaticResource Card}" Margin="0,0,10,0">
+                <StackPanel>
+                    <TextBlock Text="Proyectos" Foreground="{StaticResource Muted}"/>
+                    <TextBlock x:Name="KTotal" Text="–" FontFamily="{StaticResource TitleFont}" FontSize="26" FontWeight="SemiBold"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource Card}" Margin="5,0">
+                <StackPanel>
+                    <TextBlock Text="En curso" Foreground="{StaticResource Muted}"/>
+                    <TextBlock x:Name="KCurso" Text="–" FontFamily="{StaticResource TitleFont}" FontSize="26" FontWeight="SemiBold"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource Card}" Margin="5,0">
+                <StackPanel>
+                    <TextBlock Text="Pendientes" Foreground="{StaticResource Muted}"/>
+                    <TextBlock x:Name="KPend" Text="–" FontFamily="{StaticResource TitleFont}" FontSize="26" FontWeight="SemiBold"/>
+                </StackPanel>
+            </Border>
+            <Border Style="{StaticResource Card}" Margin="10,0,0,0">
+                <StackPanel>
+                    <TextBlock Text="Finalizados" Foreground="{StaticResource Muted}"/>
+                    <TextBlock x:Name="KFin" Text="–" FontFamily="{StaticResource TitleFont}" FontSize="26" FontWeight="SemiBold"/>
+                </StackPanel>
+            </Border>
+        </UniformGrid>
+
+        <!-- Filtros -->
+        <Grid Margin="0,0,0,14">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="Buscar proyecto" Style="{StaticResource Label}" Margin="0,0,0,4"/>
+                <TextBox x:Name="Buscar" TextChanged="Filtro_Changed"/>
+            </StackPanel>
+            <StackPanel Grid.Column="2">
+                <TextBlock Text="Estado" Style="{StaticResource Label}" Margin="0,0,0,4"/>
+                <ComboBox x:Name="EstadoFiltro" SelectionChanged="Filtro_Changed" SelectedIndex="0">
+                    <ComboBoxItem Content="Todos los estados"/>
+                    <ComboBoxItem Content="Pendiente"/>
+                    <ComboBoxItem Content="En curso"/>
+                    <ComboBoxItem Content="Finalizado"/>
+                </ComboBox>
+            </StackPanel>
+            <Button Grid.Column="4" Content="Crear proyecto" Style="{StaticResource PrimaryButton}"
+                    VerticalAlignment="Bottom" Click="Crear_Click"/>
+        </Grid>
+
+        <TextBlock x:Name="Error" Style="{StaticResource ErrorText}" Margin="0,0,0,8"/>
+
+        <DataGrid x:Name="Tabla" MinHeight="220" MaxHeight="420">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Proyecto" Binding="{Binding Nombre}" Width="2*"/>
+                <DataGridTextColumn Header="Grupo / ciclo" Binding="{Binding Equipo}" Width="1.4*"/>
+                <DataGridTextColumn Header="Estado" Binding="{Binding Estado}" Width="*"/>
+                <DataGridTextColumn Header="Fechas" Binding="{Binding Fechas}" Width="1.4*"/>
+                <DataGridTextColumn Header="Tareas finalizadas" Binding="{Binding Tareas}" Width="1.2*"/>
+                <DataGridTemplateColumn Header="Acción" Width="1.1*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Content="Ver proyecto" Style="{StaticResource LinkButton}"
+                                    Tag="{Binding Id}" Click="Ver_Click"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <StackPanel Orientation="Horizontal" Margin="0,14,0,0">
+            <Button Content="Editar" Style="{StaticResource SecondaryButton}" Click="Editar_Click"/>
+            <Button Content="Eliminar" Style="{StaticResource DangerButton}" Margin="10,0,0,0" Click="Eliminar_Click"/>
+        </StackPanel>
+        <TextBlock x:Name="Pie" Style="{StaticResource Muted}" Margin="0,10,0,0"/>
+    </StackPanel>
+</UserControl>

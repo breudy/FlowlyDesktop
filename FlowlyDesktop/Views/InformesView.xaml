@@ -1,0 +1,120 @@
+<UserControl x:Class="FlowlyDesktop.Views.InformesView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <StackPanel>
+        <TextBlock Text="Administración / Informes" Style="{StaticResource Breadcrumb}"/>
+        <TextBlock Text="Informes" Style="{StaticResource H1}"/>
+        <TextBlock x:Name="Subtitulo" Text="Seguimiento de horas, costes y estado de las tareas por proyecto."
+                   Style="{StaticResource Sub}"/>
+
+        <!-- Filtros -->
+        <Grid Margin="0,0,0,14">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0">
+                <TextBlock Text="Proyecto" Style="{StaticResource Label}" Margin="0,0,0,4"/>
+                <ComboBox x:Name="ProyectoCombo" DisplayMemberPath="Nombre" SelectionChanged="Proyecto_Changed"/>
+            </StackPanel>
+            <StackPanel Grid.Column="2">
+                <TextBlock Text="Usuario" Style="{StaticResource Label}" Margin="0,0,0,4"/>
+                <ComboBox x:Name="UsuarioCombo"/>
+            </StackPanel>
+            <Button Grid.Column="4" Content="Aplicar filtros" Style="{StaticResource SecondaryButton}"
+                    VerticalAlignment="Bottom" Click="Aplicar_Click"/>
+        </Grid>
+
+        <TextBlock x:Name="Error" Style="{StaticResource ErrorText}" Margin="0,0,0,8"/>
+
+        <!-- Indicadores -->
+        <UniformGrid Rows="1" Columns="3" Margin="0,0,0,18">
+            <StackPanel>
+                <TextBlock Text="Horas registradas / estimadas" Style="{StaticResource Muted}" Margin="0"/>
+                <TextBlock x:Name="KHoras" Text="–" FontFamily="{StaticResource TitleFont}" FontSize="22" FontWeight="SemiBold"/>
+            </StackPanel>
+            <StackPanel>
+                <TextBlock Text="Tareas finalizadas" Style="{StaticResource Muted}" Margin="0"/>
+                <TextBlock x:Name="KTareas" Text="–" FontFamily="{StaticResource TitleFont}" FontSize="22" FontWeight="SemiBold"/>
+            </StackPanel>
+            <StackPanel>
+                <TextBlock Text="Coste real del proyecto" Style="{StaticResource Muted}" Margin="0"/>
+                <TextBlock x:Name="KCoste" Text="–" FontFamily="{StaticResource TitleFont}" FontSize="22" FontWeight="SemiBold"/>
+            </StackPanel>
+        </UniformGrid>
+
+        <!-- Graficos de barras -->
+        <Grid Margin="0,0,0,18">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="16"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Border Grid.Column="0" Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Text="Horas registradas por usuario" Style="{StaticResource H2}"/>
+                    <ItemsControl x:Name="BarrasHoras">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0,0,0,10">
+                                    <Grid>
+                                        <TextBlock Text="{Binding Nombre}" FontSize="12.5"/>
+                                        <TextBlock Text="{Binding Valor}" HorizontalAlignment="Right" FontSize="12.5"/>
+                                    </Grid>
+                                    <ProgressBar Style="{StaticResource Bar}" Maximum="{Binding Maximo}" Value="{Binding Numero}"
+                                                 Margin="0,4,0,0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <TextBlock x:Name="BarrasHorasVacio" Style="{StaticResource Muted}"/>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="2" Style="{StaticResource Card}">
+                <StackPanel>
+                    <TextBlock Text="Estado de las tareas" Style="{StaticResource H2}"/>
+                    <ItemsControl x:Name="BarrasEstado">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0,0,0,10">
+                                    <Grid>
+                                        <TextBlock Text="{Binding Nombre}" FontSize="12.5"/>
+                                        <TextBlock Text="{Binding Valor}" HorizontalAlignment="Right" FontSize="12.5"/>
+                                    </Grid>
+                                    <ProgressBar Style="{StaticResource Bar}" Maximum="{Binding Maximo}" Value="{Binding Numero}"
+                                                 Margin="0,4,0,0"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <!-- Tabla de costes -->
+        <DataGrid x:Name="TablaCostes" MaxHeight="300">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Usuario / total" Binding="{Binding Usuario}" Width="2*"/>
+                <DataGridTextColumn Header="Horas reales" Binding="{Binding Horas}" Width="*"/>
+                <DataGridTextColumn Header="Tarifa" Binding="{Binding Tarifa}" Width="*"/>
+                <DataGridTextColumn Header="Coste real" Binding="{Binding Coste}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <TextBlock Text="Tareas críticas" Style="{StaticResource H2}" Margin="0,24,0,8"/>
+        <TextBlock Text="Tareas sin finalizar que bloquean a otras." Style="{StaticResource Muted}" Margin="0,-6,0,8"/>
+        <DataGrid x:Name="TablaCriticas" MaxHeight="220">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Tarea" Binding="{Binding Tarea}" Width="2*"/>
+                <DataGridTextColumn Header="Estado" Binding="{Binding Estado}" Width="*"/>
+                <DataGridTextColumn Header="Bloquea a" Binding="{Binding Bloquea}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <TextBlock x:Name="CriticasVacio" Style="{StaticResource Muted}"/>
+    </StackPanel>
+</UserControl>

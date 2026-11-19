@@ -1,0 +1,44 @@
+<UserControl x:Class="FlowlyDesktop.Views.LoginView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Background="{StaticResource Bg}">
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Width="400">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,0,0,18">
+                <Viewbox Width="46" Height="34">
+                    <Canvas Width="240" Height="170">
+                        <Path Stroke="{StaticResource Blue}" StrokeThickness="21.5"
+                              StrokeStartLineCap="Round" StrokeEndLineCap="Round" StrokeLineJoin="Round"
+                              Data="M61,107.5 C70,92 78,66.5 93,66.5 C118,66.5 124,136.3 146,136.3 C154.2,136.3 160.2,127.5 166.2,119.5 L222.5,42.2"/>
+                    </Canvas>
+                </Viewbox>
+                <TextBlock Text="Flowly" FontFamily="{StaticResource TitleFont}" FontSize="30" FontWeight="SemiBold"
+                           Margin="10,0,0,0" VerticalAlignment="Center"/>
+            </StackPanel>
+
+            <Border Style="{StaticResource Card}" Padding="28">
+                <StackPanel>
+                    <TextBlock Text="CENTRO FP · CURSO 2026–27" Style="{StaticResource Breadcrumb}"/>
+                    <TextBlock Text="Acceso administrador" Style="{StaticResource H1}"/>
+                    <TextBlock Text="Inicia sesión para gestionar proyectos, usuarios y tareas del centro."
+                               Style="{StaticResource Sub}"/>
+
+                    <TextBlock Text="Correo electrónico" Style="{StaticResource Label}"/>
+                    <TextBox x:Name="Email"/>
+
+                    <TextBlock Text="Contraseña" Style="{StaticResource Label}"/>
+                    <PasswordBox x:Name="Pass"/>
+
+                    <TextBlock x:Name="Error" Style="{StaticResource ErrorText}"/>
+
+                    <Button x:Name="Entrar" Content="Entrar" Style="{StaticResource PrimaryButton}"
+                            Margin="0,18,0,0" IsDefault="True" Click="Entrar_Click"/>
+
+                    <Separator Margin="0,20,0,10" Background="{StaticResource Line}"/>
+                    <TextBlock Text="Acceso reservado al personal administrador." Style="{StaticResource Muted}"/>
+                </StackPanel>
+            </Border>
+            <TextBlock Text="Flowly · Gestión de proyectos académicos de FP" Style="{StaticResource Muted}"
+                       HorizontalAlignment="Center" Margin="0,16,0,0"/>
+        </StackPanel>
+    </Grid>
+</UserControl>
